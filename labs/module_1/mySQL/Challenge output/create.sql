@@ -1,0 +1,68 @@
+USE lab_mysql;
+
+CREATE TABLE car(
+car_ID INT NOT NULL AUTO_INCREMENT,
+VIN VARCHAR(255) NOT NULL,
+manufacturer VARCHAR(255),
+model VARCHAR(255),
+builtyear YEAR,
+color VARCHAR(255),
+PRIMARY KEY(car_ID)
+);
+
+CREATE TABLE customer(
+cust_ID INT NOT NULL AUTO_INCREMENT,
+cust_name VARCHAR(255),
+phone INT,
+email VARCHAR(255),
+address VARCHAR(255),
+city VARCHAR(255),
+state_province VARCHAR(255),
+country VARCHAR(255),
+zipcode VARCHAR(255),
+PRIMARY KEY (cust_ID)
+);
+
+CREATE TABLE salesperson(
+staff_ID INT NOT NULL AUTO_INCREMENT,
+staff_name VARCHAR(255),
+store_loc VARCHAR(255),
+PRIMARY KEY(staff_ID)
+);
+
+CREATE TABLE invoice(
+invoice_ID INT NOT NULL AUTO_INCREMENT,
+invoice_date DATE,
+car_ID INT NOT NULL,
+cust_ID INT NOT NULL,
+staff_ID INT NOT NULL,
+PRIMARY KEY(invoice_ID),
+FOREIGN KEY(car_ID) REFERENCES car(car_ID),
+FOREIGN KEY(cust_ID) REFERENCES customer(cust_ID),
+FOREIGN KEY(staff_ID) REFERENCES salesperson(staff_ID)
+);
+
+
+"TRY WITH A CASCADE as the above doesnt want to populate:"
+CREATE TABLE invoice_test(
+invoice_ID INT NOT NULL AUTO_INCREMENT,
+invoice_date DATE,
+car_ID INT NOT NULL,
+cust_ID INT NOT NULL,
+staff_ID INT NOT NULL,
+PRIMARY KEY(invoice_ID),
+CONSTRAINT fk_car
+FOREIGN KEY(car_ID) REFERENCES car(car_ID)
+ON UPDATE CASCADE
+ON DELETE CASCADE,
+CONSTRAINT fk_customer
+FOREIGN KEY(cust_ID) REFERENCES customer(cust_ID)
+ON UPDATE CASCADE
+ON DELETE CASCADE,
+CONSTRAINT fk_salesperson
+FOREIGN KEY(staff_ID) REFERENCES salesperson(staff_ID)
+ON UPDATE CASCADE
+ON DELETE CASCADE
+);
+
+"""
